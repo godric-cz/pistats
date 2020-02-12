@@ -13,6 +13,7 @@ SELECT
     time,
     INET_NTOA(conv(substr(hex(log.ip), -8), 16, 10)) AS ip,
     host.value AS host,
+    log.uid,
     path.value AS path,
     referrer.value AS referrer,
     referrer_ext.value AS referrer_ext,

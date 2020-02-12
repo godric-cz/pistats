@@ -2,6 +2,7 @@ let src = document.currentScript.src
 let target = src.slice(0, src.lastIndexOf('/')) + '/record.php'
 
 let r = new XMLHttpRequest()
+r.withCredentials = true
 r.open('POST', target, true)
 /*
 r.onreadystatechange = function () {
