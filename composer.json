@@ -1,0 +1,9 @@
+{
+    "require": {
+        "dg/ftp-deployment": "^3.3"
+    },
+    "autoload": {
+        "files": ["src/_functions.php"],
+        "psr-4": {"": "src/"}
+    }
+}

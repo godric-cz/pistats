@@ -1,2 +1,4 @@
 /config/*
+!/config/_deploy_config.php
 !/config/default.php
+/vendor

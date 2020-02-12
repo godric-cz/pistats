@@ -1,0 +1,5 @@
+#!/usr/bin/env php
+<?php
+
+chdir(__DIR__ . '/..');
+system('vendor/bin/deployment config/_deploy_config.php');

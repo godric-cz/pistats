@@ -9,7 +9,11 @@ function config($name) {
     if (!isset($config)) {
         $defaultConfig = require __DIR__ . '/../config/default.php';
 
-        $host = $_SERVER['HTTP_HOST'];
+        if (php_sapi_name() == 'cli') {
+            $host = 'localhost';
+        } else {
+            $host = $_SERVER['HTTP_HOST'];
+        }
         if (!preg_match('/^[a-zA-Z0-9\.]+$/', $host)) {
             throw new Exception('Invalid hostname.');
         }

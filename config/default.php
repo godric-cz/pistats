@@ -6,4 +6,5 @@ return [
     'dbhost' => 'p:localhost', // persistent
     'dbpass' => '',
     'errors' => true,
+    'ftp'    => 'ftp://user:secretpassword@ftp.example.com/directory',
 ];
