@@ -5,7 +5,7 @@ Low-memory in-memory webstats for raspberry pi and shared hosts.
 Provést:
 
 ```html
-<script async src="https://example.com/pistats/js.js"></script>
+<script src="//example.com/pistats/js.js" async></script>
 ```
 
 ```sql
@@ -30,3 +30,5 @@ TODO
 
 - uklidit JS nebo udělat nějakou lokální testovací verzi
 - timeout na js soubor pro apache? (možná s if mod enabled)
+- .htacces blokující vendor apod
+- přidat locale?

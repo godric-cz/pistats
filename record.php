@@ -1,10 +1,8 @@
 <?php
 
-require_once __DIR__ . '/src/_functions.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 ini_set('display_errors', config('errors'));
-
-require_once __DIR__ . '/src/Db.php'; // TODO composer
 
 header('Access-Control-Allow-Origin: *');
 
@@ -33,7 +31,7 @@ if (!$uid) {
     setcookie('pistats', $uid, time() + 3600 * 24 * 365);
 }
 
-// open config and database TODO
+// connect database
 $db = new Db(config('dbhost'), config('dbuser'), config('dbpass'), config('dbname'));
 
 // store data
@@ -46,5 +44,5 @@ $db->insert('log', [
     'referrer_ext' => $db->subtable('referrer_ext', $referrerExt),
     'agent'        => $db->subtable('agent', $_SERVER['HTTP_USER_AGENT']),
     // TODO locale?
-    // TODO should we record query in url?
+    // TODO should we record query in url? - yes, see fotky. for example
 ]);
