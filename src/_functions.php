@@ -41,3 +41,31 @@ function url_pathquery($url) {
     }
     return $path;
 }
+
+function locale_to_flag($locale) {
+    static $languageToCountry = [
+        'en' => 'GB',
+        'de' => 'DE',
+        'cs' => 'CZ',
+    ];
+
+    $structLocale = explode('-', $locale);
+
+    if (isset($structLocale[1])) {
+        $countryCode = strtoupper($structLocale[1]);
+    } else {
+        $countryCode = $languageToCountry[$structLocale[0]] ?? null;
+        if (!$countryCode) {
+            return null;
+        }
+    }
+
+    // convert country code to flag
+    static $flagOffset = 0x1F1E6;
+    static $asciiOffset = 0x41;
+
+    $firstChar = ord($countryCode[0]) - $asciiOffset + $flagOffset;
+    $secondChar = ord($countryCode[1]) - $asciiOffset + $flagOffset;
+
+    return mb_chr($firstChar) . mb_chr($secondChar);
+}

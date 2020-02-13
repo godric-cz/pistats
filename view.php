@@ -15,13 +15,15 @@ $rows = $db->query('
         path.value AS path,
         referrer.value AS referrer,
         referrer_ext.value AS referrer_ext,
-        agent.value AS agent
+        agent.value AS agent,
+        locale.value AS locale
     FROM log
     JOIN host ON host.id = log.host
     JOIN path ON path.id = log.path
     LEFT JOIN path AS referrer ON referrer.id = log.referrer
     LEFT JOIN referrer_ext ON referrer_ext.id = log.referrer_ext
-    JOIN agent ON agent.id = log.agent
+    LEFT JOIN agent ON agent.id = log.agent
+    LEFT JOIN locale ON locale.id = log.locale
 ')->fetch_all(MYSQLI_ASSOC);
 
 usort($rows, function ($a, $b) {
@@ -32,6 +34,9 @@ $out = array_map(function ($row) {
     $agent = parse_user_agent($row['agent']);
     $row['browser'] = $agent['browser'] . ' ' . $agent['version'];
     $row['platform'] = $agent['platform'];
+
+    $row['loc'] = locale_to_flag($row['locale']);
+    unset($row['locale']);
 
     $row['bot'] = preg_match('/bot|crawl|slurp|spider|mediapartners/i', $row['agent']) ? "\u{1F916}" : '';
 

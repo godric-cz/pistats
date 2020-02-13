@@ -31,6 +31,9 @@ if (!$uid) {
     setcookie('pistats', $uid, time() + 3600 * 24 * 365);
 }
 
+$acceptLanguage = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
+$locale = $acceptLanguage[0] ?? null;
+
 // connect database
 $db = new Db(config('dbhost'), config('dbuser'), config('dbpass'), config('dbname'));
 
@@ -43,6 +46,5 @@ $db->insert('log', [
     'referrer'     => $db->subtable('path', $referrerLocal),
     'referrer_ext' => $db->subtable('referrer_ext', $referrerExt),
     'agent'        => $db->subtable('agent', $_SERVER['HTTP_USER_AGENT']),
-    // TODO locale?
-    // TODO should we record query in url? - yes, see fotky. for example
+    'locale'       => $db->subtable('locale', $locale),
 ]);

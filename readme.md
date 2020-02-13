@@ -31,4 +31,4 @@ TODO
 - uklidit JS nebo udělat nějakou lokální testovací verzi
 - timeout na js soubor pro apache? (možná s if mod enabled)
 - .htacces blokující vendor apod
-- přidat locale?
+- přidat viewport?
