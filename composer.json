@@ -1,6 +1,8 @@
 {
     "require": {
-        "dg/ftp-deployment": "^3.3"
+        "dg/ftp-deployment": "^3.3",
+        "latte/latte": "^2.6",
+        "donatj/phpuseragentparser": "^0.15.0"
     },
     "autoload": {
         "files": ["src/_functions.php"],
