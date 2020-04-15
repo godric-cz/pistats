@@ -67,5 +67,20 @@ function locale_to_flag($locale) {
     $firstChar = ord($countryCode[0]) - $asciiOffset + $flagOffset;
     $secondChar = ord($countryCode[1]) - $asciiOffset + $flagOffset;
 
-    return mb_chr($firstChar) . mb_chr($secondChar);
+    return mb_chr($firstChar, 'utf-8') . mb_chr($secondChar, 'utf-8');
+}
+
+function group_by($collection, $column) {
+    $out = [];
+
+    foreach ($collection as $item) {
+        $key = $item[$column];
+        if (isset($out[$key])) {
+            $out[$key][] = $item;
+        } else {
+            $out[$key] = [$item];
+        }
+    }
+
+    return $out;
 }

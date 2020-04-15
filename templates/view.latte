@@ -1,29 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-    body { font-family: Verdana, sans-serif; font-size: 13px; }
-    table { border-collapse: collapse; }
-    td, th { border: solid 1px #999; padding: 0.3em 0.5em; }
-    tr:nth-child(odd) { background-color: #eee; }
-    th { background-color: #ddf; }
-    tr:hover td { background-color: #ddd; }
-    </style>
-</head>
-<body>
 
-<table>
-    {foreach $rows as $row}
-    {first}
-    <tr>
-        <th n:foreach="$row as $key => $value">{$key}</th>
-    </tr>
-    {/first}
-    <tr>
-        <td n:foreach="$row as $value">{$value}</td>
-    </tr>
-    {/foreach}
-</table>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+    <style>
+        body {
+            font-family: Helvetica, sans-serif; font-size: 13px; color: #222;
+        }
+        .ct-label {
+            font-size: 8pt;
+        }
+        .ct-line {
+            stroke-width: 1px;
+        }
+        .ct-series-a .ct-line {
+            stroke: rgba(0, 0, 255, 0.5);
+        }
+        .hostrow {
+            margin-bottom: 10px;
+        }
+        .hostrow::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .hostrow-host {
+            float: left;
+            width: 210px;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .hostrow-chart {
+            float:left;
+            width: 200px;
+            height: 50px;
+        }
+    </style>
+
+    <script>
+        var graphOptions = {
+            low: 0,
+            high: 10,
+            showArea: true,
+            fullWidth: true,
+            fullHeight: true,
+            axisX: {
+                // showGrid: false,
+                showLabel: false,
+                offset: 0
+            },
+            chartPadding: 1,
+            showPoint: false,
+            series: {
+                'apv': { showArea: false, color: 'blue' }
+            }
+        }
+    </script>
+
+</head>
+<body style="margin: 50px">
+
+<div n:foreach="$groups as $host => $data" class="hostrow">
+    <div class="hostrow-host">{$host}</div>
+
+    <div id="chart-{$iterator->counter}" class="hostrow-chart"></div>
+    <script>
+        new Chartist.Line(
+            '#chart-' + {$iterator->counter},
+            {
+                series: [
+                    {
+                        name: 'apv',
+                        data: [ {$data[apv]|implode:','|noescape} ]
+                    }, {
+                        name: 'visitors',
+                        data: [ {$data[visitors]|implode:','|noescape} ]
+                    }
+                ]
+            },
+            graphOptions
+        )
+    </script>
+</div>
 
 </body>
 </html>

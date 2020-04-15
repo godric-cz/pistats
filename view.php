@@ -8,24 +8,44 @@ $db = new Db(config('dbhost'), config('dbuser'), config('dbpass'), config('dbnam
 
 $rows = $db->query('
     SELECT
-        time,
-        INET_NTOA(conv(substr(hex(log.ip), -8), 16, 10)) AS ip,
-        log.uid,
-        host.value AS host,
-        path.value AS path,
-        referrer.value AS referrer,
-        referrer_ext.value AS referrer_ext,
-        agent.value AS agent,
-        locale.value AS locale
+        host as host_id,
+        date(time) as date,
+        host.value as host,
+        count(distinct uid) as visitors,
+        count(1) as actions
     FROM log
     JOIN host ON host.id = log.host
-    JOIN path ON path.id = log.path
-    LEFT JOIN path AS referrer ON referrer.id = log.referrer
-    LEFT JOIN referrer_ext ON referrer_ext.id = log.referrer_ext
-    LEFT JOIN agent ON agent.id = log.agent
-    LEFT JOIN locale ON locale.id = log.locale
+    JOIN agent ON agent.id = log.agent AND agent.value NOT REGEXP "dataprovider|bot"
+    GROUP BY 1, 2
+    ORDER BY 3, 2
 ')->fetch_all(MYSQLI_ASSOC);
 
+$period = new DatePeriod(
+    (new DateTime)->sub(new DateInterval('P14D')),
+    new DateInterval('P1D'),
+    new DateTime
+);
+
+$out = [];
+$groups = group_by($rows, 'host');
+foreach ($groups as $host => $items) {
+    $dates = group_by($items, 'date');
+
+    foreach ($period as $dateObject) {
+        $requiredDate = $dateObject->format('Y-m-d');
+
+        $row = $dates[$requiredDate][0] ?? null;
+        $out[$host]['visitors'][] = (int) $row['visitors'] ?? 0;
+        $out[$host]['apv'][] = $row ? $row['actions'] / $row['visitors'] : 0;
+    }
+}
+
+$latte = new Latte\Engine;
+$latte->render('templates/view.latte', ['groups' => $out]);
+
+
+
+/*
 usort($rows, function ($a, $b) {
     return strcmp($b['time'], $a['time']);
 });
@@ -46,3 +66,4 @@ $out = array_map(function ($row) {
 
 $latte = new Latte\Engine;
 $latte->render('templates/view.latte', ['rows' => $out]);
+*/
