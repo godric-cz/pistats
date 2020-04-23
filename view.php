@@ -30,6 +30,7 @@ $out = [];
 $groups = group_by($rows, 'host');
 foreach ($groups as $host => $items) {
     $dates = group_by($items, 'date');
+    $out[$host]['hostId'] = $items[0]['host_id'];
 
     foreach ($period as $dateObject) {
         $requiredDate = $dateObject->format('Y-m-d');

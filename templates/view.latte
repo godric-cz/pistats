@@ -5,10 +5,8 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: Helvetica, sans-serif; font-size: 13px; color: #222;
-        }
         .ct-label {
             font-size: 8pt;
         }
@@ -60,10 +58,10 @@
     </script>
 
 </head>
-<body style="margin: 50px">
+<body>
 
 <div n:foreach="$groups as $host => $data" class="hostrow">
-    <div class="hostrow-host">{$host}</div>
+    <div class="hostrow-host"><a href="host.php?hostId={$data[hostId]}">{$host}</a></div>
 
     <div id="chart-{$iterator->counter}" class="hostrow-chart"></div>
     <script>

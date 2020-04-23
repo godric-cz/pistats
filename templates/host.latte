@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="style.css">
+
+<h1>{$host}</h1>
+
+<table class="tab">
+    <tr>
+        <th>Path</th>
+        <th>Visitors</th>
+        <th>Views</th>
+    </tr>
+    <tr n:foreach="$paths as $path">
+        <td>{urldecode($path[path])}</td>
+        <td class="r">{$path[unique]}</td>
+        <td class="r">{$path[count]}</td>
+    </tr>
+</table>
+
+<table class="tab">
+    <tr>
+        <th>UID</th>
+        <th>Start</th>
+        <th>Views</th>
+        <th>Paths</th>
+        <th>Source</th>
+    </tr>
+    <tr n:foreach="$visits as $visit">
+        <td>{$visit[uid]|truncate: 5}</td>
+        <td class="r">{$visit[start]}</td>
+        <td class="r">{$visit[actions]}</td>
+        <td class="r">{$visit[paths]}</td>
+        <td>{$visit[referrer_ext]}</td>
+    </tr>
+</table>
