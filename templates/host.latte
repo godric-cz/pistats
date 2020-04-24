@@ -9,7 +9,7 @@
         <th>Views</th>
     </tr>
     <tr n:foreach="$paths as $path">
-        <td>{urldecode($path[path])}</td>
+        <td><a href="http://{$host}{$path[path]}" target="_blank">{urldecode($path[path])}</a></td>
         <td class="r">{$path[unique]}</td>
         <td class="r">{$path[count]}</td>
     </tr>
@@ -30,6 +30,6 @@
         <td class="r">{$visit[actions]}</td>
         <td class="r">{$visit[paths]}</td>
         <td>{urldecode($visit[referrer_ext])|smarttruncate:70}</td>
-        <td title="{urldecode($visit[landing])}">{urldecode($visit[landing])|smarttruncate:70}</td>
+        <td><a href="http://{$host}{$visit[landing]}">{urldecode($visit[landing])|smarttruncate:70}</a></td>
     </tr>
 </table>

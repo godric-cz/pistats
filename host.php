@@ -23,7 +23,7 @@ $paths = $db->query('
     JOIN agent ON agent.id = log.agent AND agent.value NOT REGEXP "dataprovider|bot"
     WHERE host = ?
     GROUP BY path
-    ORDER BY 3 DESC
+    ORDER BY 3 DESC, 2 DESC
     LIMIT 10
 ', $hostId);
 
