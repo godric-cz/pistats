@@ -22,12 +22,14 @@
         <th>Views</th>
         <th>Paths</th>
         <th>Source</th>
+        <th>Landing</th>
     </tr>
     <tr n:foreach="$visits as $visit">
         <td>{$visit[uid]|truncate: 5}</td>
-        <td class="r">{$visit[start]}</td>
+        <td class="r">{$visit[start]|date:'j.n.'}&nbsp;{$visit[start]|date:'H:i'}</td>
         <td class="r">{$visit[actions]}</td>
         <td class="r">{$visit[paths]}</td>
-        <td>{$visit[referrer_ext]}</td>
+        <td>{urldecode($visit[referrer_ext])|smarttruncate:70}</td>
+        <td title="{urldecode($visit[landing])}">{urldecode($visit[landing])|smarttruncate:70}</td>
     </tr>
 </table>

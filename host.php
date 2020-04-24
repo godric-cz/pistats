@@ -34,7 +34,8 @@ $visits = $db->query('
         MIN(time) as "start",
         COUNT(1) as "actions",
         COUNT(DISTINCT path) as "paths",
-        referrer_ext.value as "referrer_ext"
+        referrer_ext.value as "referrer_ext",
+        SUBSTRING(MIN(CONCAT(time, path.value)), 20) as "landing"
     FROM log
     JOIN path ON path.id = log.path
     JOIN agent ON agent.id = log.agent AND agent.value NOT REGEXP "dataprovider|bot"
@@ -46,6 +47,20 @@ $visits = $db->query('
 ', $hostId);
 
 $latte = new Latte\Engine;
+$latte->addFilter('smarttruncate', function ($s, $length) {
+    $strlen = mb_strlen($s);
+    if ($strlen <= $length) {
+        return $s;
+    }
+
+    $rpos = mb_strrpos($s, '/');
+    $endlen = $strlen - $rpos;
+    if ($endlen < $length) { // TODO off 1?
+        return mb_substr($s, 0, $length - $endlen) . '…' . mb_substr($s, $rpos);
+    } else {
+        return mb_substr($s, 0, $length) . '…';
+    }
+});
 $latte->render('templates/host.latte', [
     'paths'  => $paths,
     'visits' => $visits,
