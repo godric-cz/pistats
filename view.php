@@ -21,9 +21,9 @@ $rows = $db->query('
 ')->fetch_all(MYSQLI_ASSOC);
 
 $period = new DatePeriod(
-    (new DateTime)->sub(new DateInterval('P14D')),
+    (new DateTime)->modify('-13 days'),
     new DateInterval('P1D'),
-    new DateTime
+    (new DateTime)->modify('+1 day') // not included in period
 );
 
 $out = [];
