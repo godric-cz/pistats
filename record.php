@@ -6,6 +6,11 @@ ini_set('display_errors', config('errors'));
 
 header('Access-Control-Allow-Origin: *');
 
+// ip blacklist
+if (in_array($_SERVER['REMOTE_ADDR'], config('ignoreIps'))) {
+    return;
+}
+
 // read data from js
 $input = file_get_contents('php://input');
 $data = json_decode($input);
