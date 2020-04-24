@@ -84,3 +84,16 @@ function group_by($collection, $column) {
 
     return $out;
 }
+
+function strip_fbclid($url) {
+    static $patterns = [
+        '/(\?|&)fbclid=[^&]*$/' => '',
+        '/\?fbclid=[^&]*&/'     => '?',
+        '/&fbclid=[^&]*&/'      => '&',
+    ];
+
+    $search = array_keys($patterns);
+    $replace = array_values($patterns);
+
+    return preg_replace($search, $replace, $url);
+}
