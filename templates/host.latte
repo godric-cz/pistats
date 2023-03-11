@@ -1,5 +1,10 @@
 <link rel="stylesheet" href="style.css">
 
+<title>Stats – {$host}</title>
+<link rel="icon" href="icon.png">
+
+<a href="#" class="back" onclick="window.history.back(); return false">←</a>
+
 <h1>{$host}</h1>
 
 <table class="tab">
@@ -25,7 +30,7 @@
         <th>Landing</th>
     </tr>
     <tr n:foreach="$visits as $visit">
-        <td>{$visit[uid]|truncate: 5}</td>
+        <td>{$visit[uid]|truncate: 5} {$visit[locale]|locale_to_flag}</td>
         <td class="r">{$visit[start]|date:'j.n.'}&nbsp;{$visit[start]|date:'H:i'}</td>
         <td class="r">{$visit[actions]}</td>
         <td class="r">{$visit[paths]}</td>

@@ -47,6 +47,7 @@ function locale_to_flag($locale) {
         'en' => 'GB',
         'de' => 'DE',
         'cs' => 'CZ',
+        'sk' => 'SK',
     ];
 
     $structLocale = explode('-', $locale);

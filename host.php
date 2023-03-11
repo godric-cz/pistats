@@ -35,11 +35,13 @@ $visits = $db->query('
         COUNT(1) as "actions",
         COUNT(DISTINCT path) as "paths",
         referrer_ext.value as "referrer_ext",
-        SUBSTRING(MIN(CONCAT(time, path.value)), 20) as "landing"
+        SUBSTRING(MIN(CONCAT(time, path.value)), 20) as "landing",
+        locale.value as "locale"
     FROM log
     JOIN path ON path.id = log.path
     JOIN agent ON agent.id = log.agent AND agent.value NOT REGEXP "dataprovider|bot"
     LEFT JOIN referrer_ext ON referrer_ext.id = referrer_ext
+    LEFT JOIN locale ON log.locale = locale.id
     WHERE host = ?
     GROUP BY 1, 2
     ORDER BY 3 DESC
@@ -61,6 +63,7 @@ $latte->addFilter('smarttruncate', function ($s, $length) {
         return mb_substr($s, 0, $length) . '…';
     }
 });
+$latte->addFilter("locale_to_flag", "locale_to_flag");
 $latte->render('templates/host.latte', [
     'paths'  => $paths,
     'visits' => $visits,

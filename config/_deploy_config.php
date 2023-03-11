@@ -7,6 +7,7 @@ return [
     'local'  => realpath(__DIR__ . '/..'),
     'ignore' => '
         /.maintenance
+        /_bordel
         /config/localhost.php
         /composer.*
         /readme.md
