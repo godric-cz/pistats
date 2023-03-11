@@ -32,3 +32,6 @@ TODO
 - timeout na js soubor pro apache? (možná s if mod enabled)
 - .htacces blokující vendor apod
 - přidat viewport?
+- ignorování ip
+- prokliky
+- vyhazovat fbclid

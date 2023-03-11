@@ -6,7 +6,7 @@ return [
     'remote' => config('ftp'),
     'local'  => realpath(__DIR__ . '/..'),
     'ignore' => '
-        /bin
+        /.maintenance
         /config/localhost.php
         /composer.*
         /readme.md

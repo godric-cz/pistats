@@ -36,15 +36,13 @@ foreach ($groups as $host => $items) {
         $requiredDate = $dateObject->format('Y-m-d');
 
         $row = $dates[$requiredDate][0] ?? null;
-        $out[$host]['visitors'][] = (int) $row['visitors'] ?? 0;
-        $out[$host]['apv'][] = $row ? $row['actions'] / $row['visitors'] : 0;
+        @$out[$host]['visitors'][] = (int) $row['visitors'] ?? 0;
+        @$out[$host]['apv'][] = $row ? $row['actions'] / $row['visitors'] : 0;
     }
 }
 
 $latte = new Latte\Engine;
 $latte->render('templates/view.latte', ['groups' => $out]);
-
-
 
 /*
 usort($rows, function ($a, $b) {

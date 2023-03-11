@@ -60,28 +60,32 @@
 </head>
 <body>
 
-<div n:foreach="$groups as $host => $data" class="hostrow">
-    <div class="hostrow-host"><a href="host.php?hostId={$data[hostId]}">{$host}</a></div>
+{foreach $groups as $host => $data}
+    <div class="hostrow">
+        <div class="hostrow-host"><a href="host.php?hostId={$data[hostId]}">{$host}</a></div>
 
-    <div id="chart-{$iterator->counter}" class="hostrow-chart"></div>
-    <script>
-        new Chartist.Line(
-            '#chart-' + {$iterator->counter},
-            {
-                series: [
-                    {
-                        name: 'apv',
-                        data: [ {$data[apv]|implode:','|noescape} ]
-                    }, {
-                        name: 'visitors',
-                        data: [ {$data[visitors]|implode:','|noescape} ]
-                    }
-                ]
-            },
-            graphOptions
-        )
-    </script>
-</div>
+        <div id="chart-{$iterator->counter}" class="hostrow-chart"></div>
+        <script>
+            new Chartist.Line(
+                '#chart-' + {$iterator->counter},
+                {
+                    series: [
+                        {
+                            name: 'apv',
+                            data: [ {$data[apv]|implode:','|noescape} ]
+                        }, {
+                            name: 'visitors',
+                            data: [ {$data[visitors]|implode:','|noescape} ]
+                        }
+                    ]
+                },
+                graphOptions
+            )
+        </script>
+    </div>
+{else}
+    no data
+{/foreach}
 
 </body>
 </html>

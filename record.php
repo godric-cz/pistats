@@ -20,7 +20,8 @@ if ($data === false) {
 }
 
 // read data from http request
-$url = parse_url($_SERVER['HTTP_REFERER']);
+$url = parse_url($_SERVER['HTTP_REFERER']); // browsers do not send path anymore
+$path = strip_fbclid($data->path);
 $referrer = parse_url($data->referrer);
 if (isset($referrer['host']) && $referrer['host'] == $url['host']) {
     $referrerLocal = url_pathquery($referrer);
@@ -30,11 +31,7 @@ if (isset($referrer['host']) && $referrer['host'] == $url['host']) {
     $referrerExt = $data->referrer;
 }
 
-$uid = (int) ($_COOKIE['pistats'] ?? null);
-if (!$uid) {
-    $uid = random_int(100000000000000000, 999999999999999999);
-    setcookie('pistats', $uid, time() + 3600 * 24 * 365);
-}
+$uid = (int) ($data->uid ?? 0);
 
 $acceptLanguage = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
 $locale = $acceptLanguage[0] ?? null;
@@ -47,7 +44,7 @@ $db->insert('log', [
     'ip'           => $db->ip($_SERVER['REMOTE_ADDR']),
     'uid'          => $uid,
     'host'         => $db->subtable('host', $url['host']),
-    'path'         => $db->subtable('path', strip_fbclid(url_pathquery($url))),
+    'path'         => $db->subtable('path', $path),
     'referrer'     => $db->subtable('path', strip_fbclid($referrerLocal)),
     'referrer_ext' => $db->subtable('referrer_ext', $referrerExt),
     'agent'        => $db->subtable('agent', $_SERVER['HTTP_USER_AGENT']),

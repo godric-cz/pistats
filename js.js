@@ -1,16 +1,19 @@
-let src = document.currentScript.src
-let target = src.slice(0, src.lastIndexOf('/')) + '/record.php'
+(() => {
+    const src = document.currentScript.src
+    const target = src.slice(0, src.lastIndexOf('/')) + '/record.php'
+    const rn = () => Math.floor(1e8 + Math.random() * (1e9 - 1e8)) + ''
 
-let r = new XMLHttpRequest()
-r.withCredentials = true
-r.open('POST', target, true)
-/*
-r.onreadystatechange = function () {
-    if (r.readyState != 4) return
-    console.log(r.status)
-    console.log(r.responseText)
-};
-*/
-r.send(JSON.stringify({
-    'referrer': document.referrer
-}))
+    let uid = window.localStorage.getItem('stat_uid')
+    if (uid === null) {
+        uid = rn() + rn()
+        window.localStorage.setItem('stat_uid', uid)
+    }
+
+    const r = new XMLHttpRequest()
+    r.open('POST', target, true)
+    r.send(JSON.stringify({
+        'referrer': document.referrer,
+        'uid': uid,
+        'path': location.pathname+(location.search?location.search:"")
+    }))
+})()
