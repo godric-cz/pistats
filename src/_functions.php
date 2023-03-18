@@ -1,5 +1,19 @@
 <?php
 
+// set -e
+error_reporting(E_ALL);
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (error_reporting() & $severity) {
+        throw new ErrorException($message, 0, $severity, $file, $line);
+    }
+});
+set_exception_handler(function (Throwable $e) {
+    http_response_code(500);
+    header('Content-Type: text/plain');
+    echo ini_get('display_errors') ? $e : 'Internal server error';
+    error_log($e);
+});
+
 /**
  * Returns configuration value from global configuration.
  */

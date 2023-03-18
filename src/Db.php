@@ -1,6 +1,8 @@
 <?php
 
 class Db {
+    private mysqli $conn;
+
     function __construct($host, $user, $pass, $dbname) {
         $this->conn = new mysqli($host, $user, $pass, $dbname);
     }
@@ -62,9 +64,9 @@ class Db {
         return $this->queryUnsafe($q);
     }
 
-    ////
-    //
-    ////
+    /////////////
+    // private //
+    /////////////
 
     private function escape($arg) {
         if (is_int($arg)) {
@@ -93,17 +95,20 @@ class Db {
 }
 
 class Ip {
-    function __construct($ip) {
-        $this->ip = $ip;
+    function __construct(
+        private readonly string $ip,
+    ) {
     }
+
     function binary() {
         return inet_pton($this->ip);
     }
 }
 
 class SubtableExpression {
-    function __construct($table, $value) {
-        $this->table = $table;
-        $this->value = $value;
+    function __construct(
+        public readonly string $table,
+        public readonly mixed $value,
+    ) {
     }
 }

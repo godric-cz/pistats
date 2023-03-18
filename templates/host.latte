@@ -34,7 +34,7 @@
         <td class="r">{$visit[start]|date:'j.n.'}&nbsp;{$visit[start]|date:'H:i'}</td>
         <td class="r">{$visit[actions]}</td>
         <td class="r">{$visit[paths]}</td>
-        <td>{urldecode($visit[referrer_ext])|smarttruncate:70}</td>
-        <td><a href="http://{$host}{$visit[landing]}">{urldecode($visit[landing])|smarttruncate:70}</a></td>
+        <td>{urldecode($visit[referrer_ext] ?? '')|smarttruncate:70}</td>
+        <td><a href="http://{$host}{$visit[landing]}">{urldecode($visit[landing] ?? '')|smarttruncate:70}</a></td>
     </tr>
 </table>

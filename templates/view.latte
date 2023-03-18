@@ -71,21 +71,34 @@
 
         <div id="chart-{$iterator->counter}" class="hostrow-chart"></div>
         <script>
-            new Chartist.Line(
-                '#chart-' + {$iterator->counter},
-                {
-                    series: [
-                        {
-                            name: 'apv',
-                            data: [ {$data[apv]|implode:','|noescape} ]
-                        }, {
-                            name: 'visitors',
-                            data: [ {$data[visitors]|implode:','|noescape} ]
-                        }
-                    ]
-                },
-                graphOptions
-            )
+            (() => {
+                const series = [
+                    {
+                        name: 'apv',
+                        data: [ {$data[apv]|implode:','|noescape} ]
+                    }, {
+                        name: 'visitors',
+                        data: [ {$data[visitors]|implode:','|noescape} ]
+                    }
+                ]
+
+                const max = Math.max(
+                    Math.max(...series[0].data),
+                    Math.max(...series[1].data),
+                    10,
+                )
+
+                new Chartist.Line(
+                    '#chart-' + {$iterator->counter},
+                    {
+                        series: series,
+                    },
+                    {
+                        ...graphOptions,
+                        high: max,
+                    }
+                )
+            })()
         </script>
     </div>
 {else}
