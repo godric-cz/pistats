@@ -29,23 +29,33 @@ $paths = $db->query('
 
 $visits = $db->query('
     SELECT
-        uid,
-        date(time) as "date",
-        MIN(time) as "start",
-        COUNT(1) as "actions",
-        COUNT(DISTINCT path) as "paths",
-        referrer_ext.value as "referrer_ext",
-        SUBSTRING(MIN(CONCAT(time, path.value)), 20) as "landing",
-        locale.value as "locale"
-    FROM log
-    JOIN path ON path.id = log.path
-    JOIN agent ON agent.id = log.agent AND agent.value NOT REGEXP "dataprovider|bot"
-    LEFT JOIN referrer_ext ON referrer_ext.id = referrer_ext
-    LEFT JOIN locale ON log.locale = locale.id
-    WHERE host = ?
-    GROUP BY 1, 2
-    ORDER BY 3 DESC
-    LIMIT 20
+        query1.*,
+        (
+            SELECT uid
+            FROM log
+            WHERE uid = query1.uid AND time < query1.start
+            LIMIT 1
+        ) as "recurring"
+    FROM (
+        SELECT
+            uid,
+            date(time) as "date",
+            MIN(time) as "start",
+            COUNT(1) as "actions",
+            COUNT(DISTINCT path) as "paths",
+            referrer_ext.value as "referrer_ext",
+            SUBSTRING(MIN(CONCAT(time, path.value)), 20) as "landing",
+            locale.value as "locale"
+        FROM log
+        JOIN path ON path.id = log.path
+        JOIN agent ON agent.id = log.agent AND agent.value NOT REGEXP "dataprovider|bot"
+        LEFT JOIN referrer_ext ON referrer_ext.id = referrer_ext
+        LEFT JOIN locale ON log.locale = locale.id
+        WHERE host = ?
+        GROUP BY 1, 2
+        ORDER BY 3 DESC
+        LIMIT 20
+    ) query1
 ', $hostId);
 
 $latte = new Latte\Engine;
