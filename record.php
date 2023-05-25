@@ -23,6 +23,12 @@ if (!$data) {
 }
 
 // read data from http request
+if (!isset($_SERVER['HTTP_REFERER'])) {
+    http_response_code(400);
+    echo '{"error":"referrer not set"}'."\n";
+    return;
+}
+
 $url = parse_url($_SERVER['HTTP_REFERER']); // browsers do not send path anymore
 $path = strip_fbclid($data->path);
 $referrer = parse_url($data->referrer);
