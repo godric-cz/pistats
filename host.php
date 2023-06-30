@@ -11,6 +11,10 @@ if (!$hostId) {
     die('no host id');
 }
 
+$timezone = 'Europe/Prague';
+$offset = (new DateTime('now', new DateTimeZone($timezone)))->format('P');
+$db->query('SET time_zone = ?', $offset);
+
 $host = $db->query('SELECT value FROM host WHERE id = ?', $hostId)->fetch_row()[0];
 
 $paths = $db->query('
